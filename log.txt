@@ -1,0 +1,24 @@
+===========================================
+Title: Batman
+Year: 1989
+IMDb Rating: 7.6
+Country: USA, UK
+Language: English, French
+Plot: The Dark Knight of Gotham City begins his war on crime with his first major enemy being the clownishly homicidal Joker.
+Actors: Michael Keaton, Jack Nicholson, Kim Basinger, Robert Wuhl
+Rotten Tomatoes Rating: N/A
+Rotten Tomatoes URL: http://www.rottentomatoes.com/m/1001781-batman/
+===========================================
+ 
+===========================================
+Title: Superman
+Year: 1978
+IMDb Rating: 7.3
+Country: USA, UK, Panama, Switzerland, Canada
+Language: English
+Plot: An alien orphan is sent from his dying planet to Earth, where he grows up to become his adoptive home's first and greatest superhero.
+Actors: Marlon Brando, Gene Hackman, Christopher Reeve, Ned Beatty
+Rotten Tomatoes Rating: N/A
+Rotten Tomatoes URL: http://www.rottentomatoes.com/m/superman_the_movie/
+===========================================
+ 

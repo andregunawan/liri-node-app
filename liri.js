@@ -32,6 +32,14 @@ client.get('search/tweets', params, callback);
 		console.log('Created on: ' + tweets[i].created_at);
 		}
 	}
+
+	fs.appendFile("log.txt", console.log(tweets[i].text), function(err) {
+	  if (err) {
+	    console.log(err);
+	  } else {
+	    console.log("Content Added!");
+	  }
+	});
 }
 
 
@@ -50,8 +58,25 @@ client.get('search/tweets', params, callback);
 // }
 
 if (command === "movie-this") {
-request('http://www.omdbapi.com/?apikey=40e9cece&t=' + title + '&tomatoes=true&r=json', movie);
 
+	if (title == null) {
+		request('http://www.omdbapi.com/?apikey=40e9cece&t=' + 'mr nobody' + '&tomatoes=true&r=json', movie);
+		function movie (error, response, body) {
+        jsonBody = JSON.parse(body);
+        console.log(' ');
+        console.log('Title: ' + jsonBody.Title);
+        console.log('Year: ' + jsonBody.Year);
+        console.log('IMDb Rating: ' + jsonBody.imdbRating);
+        console.log('Country: ' + jsonBody.Country);
+        console.log('Language: ' + jsonBody.Language);
+        console.log('Plot: ' + jsonBody.Plot);
+        console.log('Actors: ' + jsonBody.Actors);
+        console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
+        console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
+        console.log(' ');
+    	};
+	} 
+	request('http://www.omdbapi.com/?apikey=40e9cece&t=' + title + '&tomatoes=true&r=json', movie);
 	function movie (error, response, body) {
         jsonBody = JSON.parse(body);
         console.log(' ');
@@ -65,38 +90,53 @@ request('http://www.omdbapi.com/?apikey=40e9cece&t=' + title + '&tomatoes=true&r
         console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
         console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
         console.log(' ');
+
+    	fs.appendFile("log.txt", ('===========================================\r\n' + 
+    		'Title: ' + jsonBody.Title + 
+    		'\r\nYear: ' + jsonBody.Year + 
+    		'\r\nIMDb Rating: ' + jsonBody.imdbRating + 
+    		'\r\nCountry: ' + jsonBody.Country + 
+    		'\r\nLanguage: ' + jsonBody.Language + 
+    		'\r\nPlot: ' + jsonBody.Plot + 
+    		'\r\nActors: ' + jsonBody.Actors + 
+    		'\r\nRotten Tomatoes Rating: ' + jsonBody.tomatoRating + 
+    		'\r\nRotten Tomatoes URL: ' + jsonBody.tomatoURL + 
+    		'\r\n===========================================\r\n \r\n'), function(err) {
+		if (err) {
+		return console.log(err);
+		}
+		console.log("movies.txt was updated!");
+		});
     };
 }
 
+if (command === "do-what-it-says") {
+	fs.readFile("random.txt", "utf8", function(error, data) {
+		if (error) {
+		return console.log(error);
+		}
 
-fs.readFile("random.txt", "utf8", function(error, data) {
+		var dataArr = data.split(",");
+		if (dataArr[0] === 'movie-this') {
+		request('http://www.omdbapi.com/?apikey=40e9cece&t=' + dataArr[1] + '&tomatoes=true&r=json', movie);
 
-	if (error) {
-	return console.log(error);
-	}
+			function movie (error, response, body) {
+			jsonBody = JSON.parse(body);
+			console.log(' ');
+			console.log('Title: ' + jsonBody.Title);
+			console.log('Year: ' + jsonBody.Year);
+			console.log('IMDb Rating: ' + jsonBody.imdbRating);
+			console.log('Country: ' + jsonBody.Country);
+			console.log('Language: ' + jsonBody.Language);
+			console.log('Plot: ' + jsonBody.Plot);
+			console.log('Actors: ' + jsonBody.Actors);
+			console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
+			console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
+			console.log(' ');
+			};
+		}
 
-	console.log(data);
-
-	var dataArr = data.split(",");
-	if (dataArr[0] === 'movie-this') {
-	request('http://www.omdbapi.com/?apikey=40e9cece&t=' + dataArr[1] + '&tomatoes=true&r=json', movie);
-
-		function movie (error, response, body) {
-		jsonBody = JSON.parse(body);
-		console.log(' ');
-		console.log('Title: ' + jsonBody.Title);
-		console.log('Year: ' + jsonBody.Year);
-		console.log('IMDb Rating: ' + jsonBody.imdbRating);
-		console.log('Country: ' + jsonBody.Country);
-		console.log('Language: ' + jsonBody.Language);
-		console.log('Plot: ' + jsonBody.Plot);
-		console.log('Actors: ' + jsonBody.Actors);
-		console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
-		console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
-		console.log(' ');
-		};
-	}
-
-});
+	});
+}
 
 
