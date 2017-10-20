@@ -30,16 +30,19 @@ client.get('search/tweets', params, callback);
 		for (var i = 0; i < tweets.length; i++) {
 		console.log(tweets[i].text);
 		console.log('Created on: ' + tweets[i].created_at);
+
+	    	fs.appendFile("log.txt", ('===========================================\n' + 
+	    		'Tweets: ' + tweets[i].text + 
+	    		'\nCreated on: ' + tweets[i].created_at + 
+	    		'\n===========================================\n'), function(err) {
+			if (err) {
+			return console.log(err);
+			}
+			console.log("log.txt was updated!");
+			});
+
 		}
 	}
-
-	fs.appendFile("log.txt", console.log(tweets[i].text), function(err) {
-	  if (err) {
-	    console.log(err);
-	  } else {
-	    console.log("Content Added!");
-	  }
-	});
 }
 
 
@@ -91,21 +94,21 @@ if (command === "movie-this") {
         console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
         console.log(' ');
 
-    	fs.appendFile("log.txt", ('===========================================\r\n' + 
+    	fs.appendFile("log.txt", ('===========================================\n' + 
     		'Title: ' + jsonBody.Title + 
-    		'\r\nYear: ' + jsonBody.Year + 
-    		'\r\nIMDb Rating: ' + jsonBody.imdbRating + 
-    		'\r\nCountry: ' + jsonBody.Country + 
-    		'\r\nLanguage: ' + jsonBody.Language + 
-    		'\r\nPlot: ' + jsonBody.Plot + 
-    		'\r\nActors: ' + jsonBody.Actors + 
-    		'\r\nRotten Tomatoes Rating: ' + jsonBody.tomatoRating + 
-    		'\r\nRotten Tomatoes URL: ' + jsonBody.tomatoURL + 
-    		'\r\n===========================================\r\n \r\n'), function(err) {
+    		'\nYear: ' + jsonBody.Year + 
+    		'\nIMDb Rating: ' + jsonBody.imdbRating + 
+    		'\nCountry: ' + jsonBody.Country + 
+    		'\nLanguage: ' + jsonBody.Language + 
+    		'\nPlot: ' + jsonBody.Plot + 
+    		'\nActors: ' + jsonBody.Actors + 
+    		'\nRotten Tomatoes Rating: ' + jsonBody.tomatoRating + 
+    		'\nRotten Tomatoes URL: ' + jsonBody.tomatoURL + 
+    		'\n===========================================\n'), function(err) {
 		if (err) {
 		return console.log(err);
 		}
-		console.log("movies.txt was updated!");
+		console.log("log.txt was updated!");
 		});
     };
 }
@@ -133,6 +136,24 @@ if (command === "do-what-it-says") {
 			console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
 			console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
 			console.log(' ');
+
+				fs.appendFile("log.txt", ('===========================================\n' + 
+	    		'Title: ' + jsonBody.Title + 
+	    		'\nYear: ' + jsonBody.Year + 
+	    		'\nIMDb Rating: ' + jsonBody.imdbRating + 
+	    		'\nCountry: ' + jsonBody.Country + 
+	    		'\nLanguage: ' + jsonBody.Language + 
+	    		'\nPlot: ' + jsonBody.Plot + 
+	    		'\nActors: ' + jsonBody.Actors + 
+	    		'\nRotten Tomatoes Rating: ' + jsonBody.tomatoRating + 
+	    		'\nRotten Tomatoes URL: ' + jsonBody.tomatoURL + 
+	    		'\n===========================================\n'), function(err) {
+				if (err) {
+				return console.log(err);
+				}
+				console.log("log.txt was updated!");
+				});
+
 			};
 		}
 
