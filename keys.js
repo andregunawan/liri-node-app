@@ -8,4 +8,13 @@ var twitterKeys = {
   access_token_secret: 'T3Y8uCAUV2HDjC8djqyhk3E37ilRfcJoyFApgm0FEcV8Q',
 }
 
-module.exports = twitterKeys;
+var spotifyKeys = {
+        clientId: 'cb2d0e1ebce24aca865b42d94ce0eb8b',
+        clientSecret: 'fc0399dbc94141b0b93c95b37f3b3183',
+        redirectUri : 'http://localhost:8888/callback/'
+};
+
+module.exports = {
+    twitterKeys,
+    spotifyKeys
+};

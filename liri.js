@@ -2,16 +2,13 @@ console.log('heloooo');
 
 var command = process.argv[2];
 var title = process.argv[3];
+var keys = require('./keys');
 
 var Twitter = require('twitter');
-var keys = require('./keys');
-var client = new Twitter(keys);
+var client = new Twitter(keys.twitterKeys);
 
-var Spotify = require('node-spotify-api');
-var spotify = new Spotify({
-  id: 'ccacef29ce674cbcad09aea35b1cd0d8',
-  secret: '5a86a9a0bf75478db441ffac0adb709c'
-});
+var Spotify = require('spotify-web-api-node');
+var spotify = new Spotify(keys.spotifyKeys);
 
 
 var request = require('request');
@@ -46,19 +43,33 @@ client.get('search/tweets', params, callback);
 }
 
 
-// if (command === "spotify-this-song") {
-// request('https://api.spotify.com/v1/search?q=' + title + '&type=track', songs);
+if (command === "spotify-this-song") {
 
-// 	function songs (error, response, body) {
-//         jsonBody = JSON.parse(body);
-//         console.log(' ');
-//         console.log('Artist: ' + jsonBody.tracks.items[0].artists[0].name);
-//         console.log('Song: ' + jsonBody.tracks.items[0].name);
-//         console.log('Preview Link: ' + jsonBody.tracks.items[0].preview_url);
-//         console.log('Album: ' + jsonBody.tracks.items[0].album.name);
-//         console.log(' ');
-//     };
-// }
+    spotify.clientCredentialsGrant()
+      .then(function(data) {
+        console.log('The access token expires in ' + data.body['expires_in']);
+        console.log('The access token is ' + data.body['access_token']);
+
+        // Save the access token so that it's used in future calls
+        spotify.setAccessToken(data.body['access_token']);
+
+        spotify.searchTracks('Love')
+          .then(function(data) {
+            console.log('Search by "Love"', data.body);
+          }, function(err) {
+            console.error(err);
+          });
+
+      }, function(err) {
+        console.log('Something went wrong when retrieving an access token', err.message);
+      });
+}
+
+
+
+
+
+
 
 if (command === "movie-this") {
 
@@ -78,38 +89,39 @@ if (command === "movie-this") {
         console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
         console.log(' ');
     	};
-	} 
-	request('http://www.omdbapi.com/?apikey=40e9cece&t=' + title + '&tomatoes=true&r=json', movie);
-	function movie (error, response, body) {
-        jsonBody = JSON.parse(body);
-        console.log(' ');
-        console.log('Title: ' + jsonBody.Title);
-        console.log('Year: ' + jsonBody.Year);
-        console.log('IMDb Rating: ' + jsonBody.imdbRating);
-        console.log('Country: ' + jsonBody.Country);
-        console.log('Language: ' + jsonBody.Language);
-        console.log('Plot: ' + jsonBody.Plot);
-        console.log('Actors: ' + jsonBody.Actors);
-        console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
-        console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
-        console.log(' ');
+	} else {
+    	request('http://www.omdbapi.com/?apikey=40e9cece&t=' + title + '&tomatoes=true&r=json', movie);
+    	function movie (error, response, body) {
+            jsonBody = JSON.parse(body);
+            console.log(' ');
+            console.log('Title: ' + jsonBody.Title);
+            console.log('Year: ' + jsonBody.Year);
+            console.log('IMDb Rating: ' + jsonBody.imdbRating);
+            console.log('Country: ' + jsonBody.Country);
+            console.log('Language: ' + jsonBody.Language);
+            console.log('Plot: ' + jsonBody.Plot);
+            console.log('Actors: ' + jsonBody.Actors);
+            console.log('Rotten Tomatoes Rating: ' + jsonBody.tomatoRating);
+            console.log('Rotten Tomatoes URL: ' + jsonBody.tomatoURL);
+            console.log(' ');
 
-    	fs.appendFile("log.txt", ('===========================================\n' + 
-    		'Title: ' + jsonBody.Title + 
-    		'\nYear: ' + jsonBody.Year + 
-    		'\nIMDb Rating: ' + jsonBody.imdbRating + 
-    		'\nCountry: ' + jsonBody.Country + 
-    		'\nLanguage: ' + jsonBody.Language + 
-    		'\nPlot: ' + jsonBody.Plot + 
-    		'\nActors: ' + jsonBody.Actors + 
-    		'\nRotten Tomatoes Rating: ' + jsonBody.tomatoRating + 
-    		'\nRotten Tomatoes URL: ' + jsonBody.tomatoURL + 
-    		'\n===========================================\n'), function(err) {
-		if (err) {
-		return console.log(err);
-		}
-		console.log("log.txt was updated!");
-		});
+        	fs.appendFile("log.txt", ('===========================================\n' + 
+        		'Title: ' + jsonBody.Title + 
+        		'\nYear: ' + jsonBody.Year + 
+        		'\nIMDb Rating: ' + jsonBody.imdbRating + 
+        		'\nCountry: ' + jsonBody.Country + 
+        		'\nLanguage: ' + jsonBody.Language + 
+        		'\nPlot: ' + jsonBody.Plot + 
+        		'\nActors: ' + jsonBody.Actors + 
+        		'\nRotten Tomatoes Rating: ' + jsonBody.tomatoRating + 
+        		'\nRotten Tomatoes URL: ' + jsonBody.tomatoURL + 
+        		'\n===========================================\n'), function(err) {
+    		if (err) {
+    		return console.log(err);
+    		}
+    		console.log("log.txt was updated!");
+    		});
+        };
     };
 }
 

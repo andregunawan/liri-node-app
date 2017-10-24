@@ -5,11 +5,12 @@
   "main": "package.json",
   "dependencies": {
     "node-spotify-api": "^1.0.7",
+    "spotify-web-api-node": "^2.5.0",
     "twitter": "^1.7.1"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node liri.js", //////////
+    "start": "node liri.js",
     "test": "liri node app"
   },
   "repository": {
