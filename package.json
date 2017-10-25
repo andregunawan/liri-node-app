@@ -4,6 +4,7 @@
   "description": "liri-node",
   "main": "package.json",
   "dependencies": {
+    "columnify": "^1.5.4",
     "node-spotify-api": "^1.0.7",
     "spotify-web-api-node": "^2.5.0",
     "twitter": "^1.7.1"
